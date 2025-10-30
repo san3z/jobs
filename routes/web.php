@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Models\Vacancy;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
@@ -17,3 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
+
+Route::get('/jobs',  function () 
+{
+    return Vacancy::all();
+});
