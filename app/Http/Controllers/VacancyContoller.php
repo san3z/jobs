@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class VacancyContoller extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Vacancy $vacancy): string
     {
         $vacancies = Vacancy::all();
-        return $vacancies;
+    return view('vacancies.index')->with('vacancies', $vacancies);
+    #   $vacancies = Vacancy::all();
+      # return $vacancies;
 
     }
 
@@ -36,9 +39,9 @@ class VacancyContoller extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Vacancy $vacancy): View
     {
-        //
+        return view('vacancies.show', ['vacancy' => $vacancy]);
     }
 
     /**

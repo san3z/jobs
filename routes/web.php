@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VacancyContoller;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -19,7 +20,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/settings.php';
 
-Route::get('/jobs',  function () 
+Route::get('/vacancies',  function () 
 {
-    return Vacancy::all();
+    $vacancies = Vacancy::all();
+    #return Vacancy::all();
+    return View('vacancies.index', ['vacancies' => $vacancies]);
+});
+
+Route::get('/vacancies/{vacancy}', function (Vacancy $vacancy): Illuminate\View\View {
+    return view('vacancies.show', compact('vacancy'));
+    #return $vacancy;
 });
