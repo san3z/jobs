@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vacancy;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class VacancyContoller extends Controller
@@ -11,7 +13,7 @@ class VacancyContoller extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Vacancy $vacancy): string
+    public function index(Vacancy $vacancy): View
     {
         $vacancies = Vacancy::all();
     return view('vacancies.index')->with('vacancies', $vacancies);
@@ -23,9 +25,9 @@ class VacancyContoller extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('vacancies.create');
     }
 
     /**
@@ -33,7 +35,13 @@ class VacancyContoller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name'=>'required|string|max:255',
+            'about'=>'required|string',
+        ]);
+
+        Vacancy::create($validated);
+        return redirect('/vacancies');
     }
 
     /**
@@ -47,24 +55,31 @@ class VacancyContoller extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Vacancy $vacancy)
     {
-        //
+        return view('vacancies.edit', compact('vacancy'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Vacancy $vacancy)
     {
-        //
+         $validated = $request->validate([
+            'name'=>'required|string|max:255',
+            'about'=>'required|string',
+        ]);
+
+        $vacancy->update($validated);
+        return redirect('/vacancies');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Vacancy $vacancy)
     {
-        //
+        $vacancy->delete();
+        return redirect('/vacancies');
     }
 }
